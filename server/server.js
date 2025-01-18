@@ -22,6 +22,7 @@ mongoose
 .then(() => console.log("mongodb is connected")) 
 .catch((e) => console.log(e));
 
+// routes configuration 
 
 app.use((err,req,res,next) => {
      console.log(err.stack);
