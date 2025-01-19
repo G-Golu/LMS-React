@@ -1,110 +1,79 @@
-import { Input } from "../ui/input";
-import { Label } from "../ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../ui/select";
+import { Label } from "@radix-ui/react-dropdown-menu";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@radix-ui/react-select";
 import { Textarea } from "../ui/textarea";
+import { Input } from "postcss";
 
-function FormControls({ formControls = [], formData, setFormData }) {
-  function renderComponentByType(getControlItem) {
+
+function FormControls({formControls = [], formData, setFormData}) {
+  
+  function renderComponentByType(getControlItem){
     let element = null;
-    const currentControlItemValue = formData[getControlItem.name] || "";
-
+    
     switch (getControlItem.componentType) {
-      case "input":
-        element = (
-          <Input
-            id={getControlItem.name}
-            name={getControlItem.name}
-            placeholder={getControlItem.placeholder}
-            type={getControlItem.type}
-            value={currentControlItemValue}
-            onChange={(event) =>
-              setFormData({
-                ...formData,
-                [getControlItem.name]: event.target.value,
-              })
-            }
-          />
-        );
+      case 'input':
+        element = <Input
+        id={getControlItem.name}
+        name={getControlItem.name}
+        placeholder={getControlItem.placeholder}
+        type={getControlItem.type}
+        />;
+        
+        
         break;
-      case "select":
-        element = (
-          <Select
-            onValueChange={(value) =>
-              setFormData({
-                ...formData,
-                [getControlItem.name]: value,
-              })
-            }
-            value={currentControlItemValue}
-          >
+        case 'select':
+          element = <Select>
             <SelectTrigger className="w-full">
-              <SelectValue placeholder={getControlItem.label} />
+            <SelectValue placeholder={getControlItem.label}/>
             </SelectTrigger>
             <SelectContent>
-              {getControlItem.options && getControlItem.options.length > 0
-                ? getControlItem.options.map((optionItem) => (
-                    <SelectItem key={optionItem.id} value={optionItem.id}>
-                      {optionItem.label}
-                    </SelectItem>
-                  ))
-                : null}
+              {
+                getControlItem.options && getControlItem.options.length > 0 ?
+                getControlItem.options.map(optionItem=>(<SelectItem key={optionItem.id} value={optionItem.id}>{optionItem.label}</SelectItem>)) : null
+              }
             </SelectContent>
-          </Select>
-        );
-        break;
-      case "textarea":
-        element = (
-          <Textarea
+          </Select>;
+          
+          break;
+          case 'textarea':
+            element = <Textarea 
             id={getControlItem.name}
             name={getControlItem.name}
             placeholder={getControlItem.placeholder}
-            value={currentControlItemValue}
-            onChange={(event) =>
-              setFormData({
-                ...formData,
-                [getControlItem.name]: event.target.value,
-              })
-            }
-          />
-        );
-        break;
-
+            />;
+            
+            break;
+    
       default:
-        element = (
-          <Input
-            id={getControlItem.name}
-            name={getControlItem.name}
-            placeholder={getControlItem.placeholder}
-            type={getControlItem.type}
-            value={currentControlItemValue}
-            onChange={(event) =>
-              setFormData({
-                ...formData,
-                [getControlItem.name]: event.target.value,
-              })
-            }
-          />
-        );
+        element = <Input
+        id={getControlItem.name}
+        name={getControlItem.name}
+        placeholder={getControlItem.placeholder}
+        type={getControlItem.type}
+        />;
+        
+        
         break;
     }
-
+    
     return element;
+    
   }
-
+  
   return (
     <div className="flex flex-col gap-3">
-      {formControls.map((controleItem) => (
-        <div key={controleItem.name}>
-          <Label htmlFor={controleItem.name}>{controleItem.label}</Label>
-          {renderComponentByType(controleItem)}
-        </div>
-      ))}
+      {
+        FormControls.map(controlItem =>
+          
+          <div key={controlItem.name}>
+            
+            <Label htmlFor={controlItem.name}>{controlItem.label}</Label>
+            {
+              renderComponentByType(controlItem)
+            }
+          </div>
+          
+        )
+      }
     </div>
   );
 }
